@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CMPDIPS — Coal Mine Planning & Design Institute</title>
+    <meta name="description" content="Institutional report builder for coal mines across India. View parliamentary, geological, and production summaries in real-time." />
+
+    <!-- Leaflet -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css" />
+
+    <!-- App CSS -->
+    <link rel="stylesheet" href="/static/style.css" />
+</head>
+<body>
+
+<div class="app-shell">
+
+    <!-- ======== SIDEBAR ======== -->
+    <aside class="sidebar">
+        <div class="sidebar-logo">CM</div>
+        <nav class="sidebar-nav">
+            <button class="sidebar-btn active" title="Dashboard">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-4 0h4"/>
+                </svg>
+            </button>
+            <button class="sidebar-btn" title="Reports">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"/>
+                </svg>
+            </button>
+            <button class="sidebar-btn" title="AI Insights">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"/>
+                </svg>
+            </button>
+            <button class="sidebar-btn" title="Automation">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M9.75 3.104v5.714a2.25 2.25 0 01-.659 1.591L5 14.5M9.75 3.104c-.251.023-.501.05-.75.082m.75-.082a24.301 24.301 0 014.5 0m0 0v5.714a2.25 2.25 0 00.659 1.591L19 14.5M14.25 3.104c.251.023.501.05.75.082M19 14.5l-2.47 3.71a.75.75 0 01-.624.336H8.094a.75.75 0 01-.625-.336L5 14.5m14 0H5"/>
+                </svg>
+            </button>
+        </nav>
+        <div class="sidebar-bottom">
+            <button class="sidebar-btn" title="Settings">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.066 2.573c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.573 1.066c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.066-2.573c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/>
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                </svg>
+            </button>
+            <div class="sidebar-avatar" title="Admin">A</div>
+        </div>
+    </aside>
+
+    <!-- ======== MAIN AREA ======== -->
+    <div class="main-area">
+
+        <!-- ── Top Bar ── -->
+        <header class="topbar">
+            <div class="topbar-left">
+                <span class="topbar-title">Reports Center</span>
+                <span class="topbar-subtitle">View and generate analytical documents</span>
+            </div>
+            <div class="topbar-actions">
+                <div class="search-box">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+                    <input type="text" id="globalSearch" placeholder="Search datasets..." />
+                </div>
+                <button class="btn-add-data" id="btnAddData">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+                    Add Data
+                </button>
+                <button class="btn-icon" id="btnNotifications" title="Notifications">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" width="18" height="18"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg>
+                    <span class="badge"></span>
+                </button>
+            </div>
+        </header>
+
+        <!-- ── Scrollable Content ── -->
+        <div class="content-scroll">
+
+
+            <!-- Split Layout: Map + Preview -->
+            <div class="split-layout">
+
+                <!-- LEFT: Map Panel -->
+                <div class="map-panel fade-in">
+                    <div class="map-panel-header">
+                        <span class="map-panel-title">Mine Locations — India</span>
+                        <span class="map-mine-count" id="mapMineCount">Loading…</span>
+                    </div>
+                    <div class="filter-row">
+                        <!-- Subsidiary Hover Dropdown -->
+                        <div class="custom-dropdown" id="dropdownSubsidiary">
+                            <button class="filter-pill" type="button" aria-haspopup="true">
+                                <span class="pill-title">Subsidiary:</span>
+                                <span class="pill-value" id="labelSubsidiary">All</span>
+                                <svg class="chevron-icon" width="12" height="12" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"/></svg>
+                            </button>
+                            <div class="dropdown-menu" id="menuSubsidiary">
+                                <div class="dropdown-item active" data-value="">All Subsidiaries</div>
+                            </div>
+                        </div>
+
+                        <!-- Type Hover Dropdown -->
+                        <div class="custom-dropdown" id="dropdownType">
+                            <button class="filter-pill" type="button" aria-haspopup="true">
+                                <span class="pill-title">Type:</span>
+                                <span class="pill-value" id="labelType">All</span>
+                                <svg class="chevron-icon" width="12" height="12" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"/></svg>
+                            </button>
+                            <div class="dropdown-menu" id="menuType">
+                                <div class="dropdown-item active" data-value="">All Types</div>
+                            </div>
+                        </div>
+
+                        <!-- State Hover Dropdown -->
+                        <div class="custom-dropdown" id="dropdownState">
+                            <button class="filter-pill" type="button" aria-haspopup="true">
+                                <span class="pill-title">State:</span>
+                                <span class="pill-value" id="labelState">All</span>
+                                <svg class="chevron-icon" width="12" height="12" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"/></svg>
+                            </button>
+                            <div class="dropdown-menu" id="menuState">
+                                <div class="dropdown-item active" data-value="">All States</div>
+                            </div>
+                        </div>
+
+                        <input type="text" class="map-search" id="mapSearch" placeholder="Search mines…" />
+                    </div>
+                    <div class="map-container" id="map"></div>
+                </div>
+
+                <!-- RIGHT: Preview Panel -->
+                <div class="preview-panel fade-in">
+                    <div class="preview-panel-header">
+                        <span class="preview-panel-title">Live Document Preview</span>
+                        <div class="preview-panel-tabs">
+                            <button class="preview-tab active" data-tab="document">Document</button>
+                            <button class="preview-tab" data-tab="reports">Reports</button>
+                        </div>
+                    </div>
+                    <div class="preview-content" id="previewContent">
+                        <!-- Empty State -->
+                        <div class="empty-state" id="emptyState">
+                            <div class="empty-state-icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+                            </div>
+                            <h3>Select a Mine</h3>
+                            <p>Click on any mine marker on the map to view its official institutional reports and documents.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Leaflet JS -->
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
+
+<!-- App JS -->
+<script src="/static/app.js"></script>
+
+</body>
+</html>
